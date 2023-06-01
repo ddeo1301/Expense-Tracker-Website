@@ -14,7 +14,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 app.use(cors());
-
 // app.use(bodyParser.urlencoded());  ////this is for handling forms
 app.use(express.json());  //this is for handling jsons
 
