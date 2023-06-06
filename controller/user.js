@@ -16,7 +16,7 @@ function isstringinvalid(string){
     // properties from req.body which are expexted to sent the request body
     console.log('email', email)
 
-    if(isstringinvalid(name) || isstringinvalid(email || isstringinvalid(password))){
+    if(isstringinvalid(name) || isstringinvalid(email) || isstringinvalid(password)){
         // if any of three is invalid, it returns a response with status 400(Bad Request) and JSON object 
         // containing an error message
         return res.status(400).json({err: "Bad parameters . Something is missing"})
