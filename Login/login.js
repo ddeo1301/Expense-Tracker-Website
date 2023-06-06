@@ -13,6 +13,7 @@ function login(e) { // handles form submission event e
         // promise so that we can use .then() and .catch() to handle response
         alert(response.data.message); // callback function is executed with response object as its parameters
         // calls "ale..." to display a message from server response
+        localStorage.setItem('token', response.data.token);
         window.location.href = "../ExpenseTracker/expense.html"
     }).catch(err => {
         console.log(JSON.stringify(err)); // converts error objects to JSON string
