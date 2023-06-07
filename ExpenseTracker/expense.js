@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', ()=> {
 
     if(ispremiumuser){
         showPremiumuserMessage();
-        //showLeaderboard()
+        showLeaderboard()
     }
 
     axios.get('http://localhost:3000/expense/getexpenses', { headers: {"Authorization" : token} })
@@ -52,10 +52,6 @@ window.addEventListener('DOMContentLoaded', ()=> {
         showError(err)
     })
 });
-
-// function showError(err){
-//     document.body.innerHTML += `<div style="color:red;"> ${err}</div>`
-// }
 
 // function addNewExpensetoUI(expense){
 //     const parentElement = document.getElementById('listOfExpenses');
@@ -101,25 +97,25 @@ function showError(err){
     document.body.innerHTML += `<div style="color:red;"> ${err}</div>`
 }
 
-// function showLeaderboard(){
-//     const inputElement = document.createElement("input");
-//     inputElement.type = "button";
-//     inputElement.value = 'Show Leaderboard';
+function showLeaderboard(){
+    const inputElement = document.createElement("input");
+    inputElement.type = "button";
+    inputElement.value = 'Show Leaderboard';
 
-//     inputElement.onclick = async() => {
-//         const token = localStorage.getItem('token')
-//         const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
-//         console.log(userLeaderBoardArray)
+    inputElement.onclick = async() => {
+        const token = localStorage.getItem('token')
+        const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
+        console.log(userLeaderBoardArray)
 
-//         var leaderboardElem = document.getElementById('leaderboard')
-//         leaderboardElem.innerHTML += '<h1> Leader Board </<h1>'
-//         userLeaderBoardArray.data.forEach((userDetails) => {
-//             leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
-//         })
-//     }
-//     document.getElementById("message").appendChild(inputElement);
+        var leaderboardElem = document.getElementById('leaderboard')
+        leaderboardElem.innerHTML += '<h1> Leader Board </<h1>'
+        userLeaderBoardArray.data.forEach((userDetails) => {
+            leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
+        })
+    }
 
-// }
+    document.getElementById("message").appendChild(inputElement);
+}
 
 
 function removeExpensefromUI(expenseid){
@@ -150,7 +146,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
          document.getElementById('rzp-button1').style.visibility = "hidden"
          document.getElementById('message').innerHTML = "You are a premium user "
          localStorage.setItem('token', res.data.token)
-         //showLeaderboard()
+         showLeaderboard()
      },
   };
   const rzp1 = new Razorpay(options);
