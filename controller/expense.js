@@ -33,10 +33,10 @@ const deleteexpense = (req, res) => {
         return res.status(400).json({success: false })
     }
     
-    Expense.destroy({where: { id: expenseid, userId: req.user.id }}).then(() => {
-        // if(noofrows === 0){
-        //     return res.status(404).json({success: false, message: "Expense doesnot belongs to user"})
-        // }
+    Expense.destroy({where: { id: expenseid, userId: req.user.id }}).then((noofrows) => {
+        if(noofrows === 0){
+            return res.status(404).json({success: false, message: "Expense doesnot belongs to user"})
+        }
 
         return res.status(200).json({ success: true, message: "Deleted Successfuly"})
     }).catch(err => {
