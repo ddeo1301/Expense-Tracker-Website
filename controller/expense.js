@@ -18,6 +18,8 @@ const addexpense = async (req, res) => {
             totalExpenses: totalExpense
         },{
             where: {id: req.user.id},
+            //transaction: t
+        },{
             transaction: t
         })
 
