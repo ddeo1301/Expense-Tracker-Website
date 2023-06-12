@@ -2,7 +2,6 @@ const Razorpay = require('razorpay');
 const Order = require('../models/orders')
 const userController = require('./user')
 
-
 const purchasepremium = async (req, res) => {
     try {
         
@@ -32,29 +31,63 @@ const purchasepremium = async (req, res) => {
     }
 }
 
- const updateTransactionStatus = async (req, res ) => {
+//  const updateTransactionStatus = async (req, res ) => {
+//     try {
+//         const userId = req.user.id;
+//         const { payment_id, order_id} = req.body;
+//         const order  = await Order.findOne({where : {orderid : order_id}}) //2
+//         const promise1 =  order.update({ paymentid: payment_id, status: 'SUCCESSFUL'}) 
+//         const promise2 =  req.user.update({ ispremiumuser: true }) 
+
+//         Promise.all([promise1, promise2]).then(()=> {
+//             return res.status(202).json({sucess: true, message: "Transaction Successful", token: userController.generateAccessToken(userId, undefined , true) });
+//         }).catch((error ) => {
+//             throw new Error(error)
+//         })       
+//     } catch (err) {
+//         console.log(err);
+//         res.status(403).json({ errpr: err, message: 'Sometghing went wrong' })
+//     }
+// }
+
+const updateTransactionStatus = async (req, res) => {
     try {
-        //const userId = req.user.id;
-        const { payment_id, order_id} = req.body;
-        const order  = await Order.findOne({where : {orderid : order_id}}) //2
-        const promise1 =  order.update({ paymentid: payment_id, status: 'SUCCESSFUL'}) 
-        const promise2 =  req.user.update({ ispremiumuser: true }) 
-
-        Promise.all([promise1, promise2]).then(()=> {
-            return res.status(202).json({sucess: true, message: "Transaction Successful"});
-            //return res.status(202).json({sucess: true, message: "Transaction Successful", token: userController.generateAccessToken(userId,undefined , true) });
-        }).catch((error ) => {
-            throw new Error(error)
-        })
-
-        
-                
+      const { payment_id, order_id } = req.body;
+      const order = await Order.findOne({ where: { orderid: order_id } });
+      if (order) {
+        await order.update({ paymentid: payment_id, status: 'SUCCESSFUL' });
+        return res.status(202).json({ success: true, message: 'Transaction Successful' });
+      } else {
+        throw new Error('Order not found');
+      }
     } catch (err) {
-        console.log(err);
-        res.status(403).json({ errpr: err, message: 'Sometghing went wrong' })
-
+      console.error(err);
+      res.status(403).json({ error: err.message, message: 'Something went wrong' });
     }
-}
+  };
+  
+
+
+
+// const updateTransactionStatus = (req, res ) => {
+//     try {
+//         const { payment_id, order_id} = req.body;
+
+//         Order.findOne({where : {orderid : order_id}}).then(order => {
+//             order.update({ paymentid: payment_id, status: 'SUCCESSFUL'}).then(() => {
+//                 return res.status(202).json({sucess: true, message: "Transaction Successful"});
+//             }).catch((err)=> {
+//                 throw new Error(err);
+//             })
+//         }).catch(err => {
+//             throw new Error(err);
+//         })
+//     } catch (err) {
+//         console.log(err);
+//         res.status(403).json({ errpr: err, message: 'Sometghing went wrong' })
+//     }
+// }
+
 
 module.exports = {
     purchasepremium,

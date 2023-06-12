@@ -7,9 +7,9 @@ const authenticate = (req, res, next) => {
         const token = req.header('Authorization');
         console.log(token);
         const user = jwt.verify(token, 'secretkey');
-        console.log('userID >>>> ', user.userId)
-        User.findByPk(user.userId).then(user => {
+        console.log('userID >>>> ', user.userId);
 
+        User.findByPk(user.userId).then(user => {
             req.user = user; ///ver
             next();
         })
@@ -19,7 +19,6 @@ const authenticate = (req, res, next) => {
         return res.status(401).json({success: false})
         // err
       }
-
 }
 
 module.exports = {
