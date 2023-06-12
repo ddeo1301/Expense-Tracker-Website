@@ -11,15 +11,14 @@
       color:black;
     }
      html,body {
+      background-color:darkblue
+    }
+    .container{
       background-image: url("https://tse3.mm.bing.net/th?id=OIP.Mne831_m63gtjyEQ3GvNowHaEK&pid=Api&P=0&h=180");
       height: 100%;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-    }
-    .container{
-      background-position: center;
-      background-color:deeppink
     }
   </style>
 </head>
@@ -30,17 +29,18 @@
 
     <form onsubmit="login(event)">
       <div class="mb-2 mt-2" id="list of items">
-        <!-- <label class="form-label">Enter your Email:</label><br> -->
+        <label class="form-label">Enter your Email:</label><br>
         <input type="text" class="form-control" id="email" placeholder="Enter the email " required><br>
-        <!-- <label>Enter your password :</label><br> -->
-        <input type="password" class="form-control" id="password" placeholder="password" size="50" required><br>
-        <button class="form-control" style="color:chartreuse">Login</button>
 
-        <button onclick="forgotpassword()"> Forgot password</button>
+        <label>Enter your password :</label><br>
+        <input type="password" class="form-control" id="password" placeholder="password" size="50" required><br>
+
+        <button class="form-control" style="color:black">Login</button>
+        <button onclick="forgotpassword()"> Forgot password</button><br>
       </div>
     </form>
 
-    <a href="../Signup/signup.html" style="color: black;">New User - Signup Now</a>
+    <a href="../Signup/signup.html" style="color:aliceblue;">New User - Signup Now</a>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"></script>

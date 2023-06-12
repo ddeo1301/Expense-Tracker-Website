@@ -1,4 +1,3 @@
-//totalExpenses
 function addNewExpense(e){
     e.preventDefault();
 
@@ -54,37 +53,42 @@ window.addEventListener('DOMContentLoaded', ()=> {
     })
 });
 
-// function addNewExpensetoUI(expense){
-//     const parentElement = document.getElementById('listOfExpenses');
-//     const expenseElemId = `expense - ${expense.id}`;
-//     parentElement.innerHTML += `
-//         <li id=${expenseElemId}>
-//             ${expense.expenseamount} - ${expense.category} - ${expense.description}
-//             <button onclick='deleteExpense(event, ${expense.id})'>
-//                 Delete Expense
-//             </button>
-//         </li>`
-// }
 
-function addNewExpensetoUI(expense) {
+function addNewExpensetoUI(expense){
+    console.log("hello");
     const parentElement = document.getElementById('listOfExpenses');
     const expenseElemId = `expense-${expense.id}`;
-
-    const liElement = document.createElement('li');
-    liElement.id = expenseElemId;
-    liElement.textContent = `${expense.expenseamount} - ${expense.category} - ${expense.description}`;
-
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete Expense';
-    deleteButton.addEventListener('click', (e) => {
-        deleteExpense(e, expense.id);
-    });
-
-    liElement.appendChild(deleteButton);
-    parentElement.appendChild(liElement);
+    parentElement.innerHTML += `
+        <li id=${expenseElemId}>
+            ${expense.expenseamount} - ${expense.category} - ${expense.description}
+            <button onclick='deleteExpense(event, ${expense.id})'>
+                Delete Expense
+            </button>
+        </li>`
 }
 
+
+// function addNewExpensetoUI(expense) {
+//     console.log("hello")
+//     const parentElement = document.getElementById('listOfExpenses');
+//     const expenseElemId = `expense-${expense.id}`;
+
+//     const liElement = document.createElement('li');
+//     liElement.id = expenseElemId;
+//     liElement.textContent = `${expense.expenseamount} - ${expense.category} - ${expense.description}`;
+
+//     const deleteButton = document.createElement('button');
+//     deleteButton.textContent = 'Delete Expense';
+//     deleteButton.addEventListener('click', (e) => {
+//         deleteExpense(e, expense.id);
+//     });
+
+//     liElement.appendChild(deleteButton);
+//     parentElement.appendChild(liElement);
+// }
+
 function deleteExpense(e, expenseid) {
+    console.log("hi")
     const token = localStorage.getItem('token')
     axios.delete(`http://localhost:3000/expense/deleteexpense/${expenseid}`, {headers: {"Authorization": token}})
     .then((response) => {
@@ -113,7 +117,7 @@ function showLeaderboard(){
         leaderboardElem.innerHTML += '<h1> Leader Board </<h1>'
         userLeaderBoardArray.data.forEach((userDetails) => {
           // leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
-           leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalExpenses || 0} </li>`
+           leaderboardElem.innerHTML += `<li>Name -> ${userDetails.name} -> Total Expense -> ${userDetails.totalExpenses || 0} </li>`
         })
     }
 
