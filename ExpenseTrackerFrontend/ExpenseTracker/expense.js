@@ -1,3 +1,6 @@
+let currentPage = 1;
+let rowsPerPage = localStorage.getItem('rowsPerPage') ? localStorage.getItem('rowsPerPage') : 5;
+
 function addNewExpense(e){
     e.preventDefault();
 
@@ -53,6 +56,34 @@ window.addEventListener('DOMContentLoaded', ()=> {
     })
 });
 
+async function getExpenses(){
+    try{
+        const token = localStorage.getItem('token');
+        const decodedToken = parseJwt(token);
+        // const ispremiumuser = decodedToken.ispremiumuser;
+
+        // if(ispremiumuser){
+        //     showPremiumuserMessage();
+        //     showLeaderboard();
+        // };
+
+        const response = await axios.get(`http://localhost:3000/expense/getexpenses?page=${currentPage}&rows=${rowsPerPage}`, { headers: {'Authorization': token}})
+       document.getElementById('listOfExpenses').innerHTML = "";
+       const { expenses, totalCount } = response.data;
+       pagination(totalCount);
+
+       if (expenses.length > 0) {
+           for (let i = 0; i < expenses.length; i++) {
+            addNewExpensetoUI(response.data.expenses[i]);
+           }
+       } else {
+           document.getElementById('err').textContent = "Currently there are no Expenses!"
+       }
+    } catch (error) {
+       console.log(error);
+    }
+}
+
 
 function addNewExpensetoUI(expense){
     console.log("hello");
@@ -73,7 +104,6 @@ function deleteExpense(e, expenseid) {
     axios.delete(`http://localhost:3000/expense/deleteexpense/${expenseid}`, {headers: {"Authorization": token}})
     .then((response) => {
             removeExpensefromUI(expenseid);   
-            //location.reload();    
     }).catch((err => {
         showError(err);
     }))
@@ -181,3 +211,48 @@ document.getElementById('rzp-button1').onclick = async function (e) {
  });
 }
 
+async function pagination(totalCount) {
+    try {
+      maxPages = Math.ceil(totalCount / rowsPerPage);
+
+      document.getElementById('prev-btn').style.display = currentPage > 1 ? "block" : "none";
+      document.getElementById('next-btn').style.display = maxPages > currentPage ? "block" : "none";
+      document.getElementById('rows-per-page').value = rowsPerPage;
+
+      const start = (currentPage - 1) * rowsPerPage + 1;
+      const temp=start + Number(rowsPerPage) - 1;
+      const end = temp<totalCount ? temp : totalCount;
+
+      document.getElementById('page-details').textContent = `Showing ${start}-${end} of ${totalCount}`;
+    } catch (error) {
+      console.error(error);
+    }
+}
+
+  async function showChangedRows() {
+    try {
+      rowsPerPage = event.target.value;
+      localStorage.setItem('rowsPerPage',rowsPerPage);
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function showPreviousPage() {
+    try {
+      currentPage--;
+      await getExpenses();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function showNextPage() {
+    try {
+      currentPage++;
+      await getExpenses();
+    } catch (error) {
+      console.error(error);
+    }
+  }

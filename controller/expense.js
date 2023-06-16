@@ -66,14 +66,29 @@ const addexpense = async (req, res) => {
     }   
 }
 
-const getexpenses = (req, res)=> {
-    Expense.findAll({where: {userId: req.user.id}}).then(expenses => {
-        return res.status(200).json({expenses, success: true})
-    })
-    .catch(err => {
-        console.log(err)
-        return res.status(500).json({ error: err, success: false})
-    })
+// const getexpenses = (req, res)=> {
+//     Expense.findAll({where: {userId: req.user.id}}).then(expenses => {
+//         return res.status(200).json({expenses, success: true})
+//     })
+//     .catch(err => {
+//         console.log(err)
+//         return res.status(500).json({ error: err, success: false})
+//     })
+// }
+
+const getexpenses = async (req, res) => {
+  try {
+      const totalCount=await UserServices.countExpenses(req.user);
+      const { page, rows } = req.query;
+      offset = (page-1)*rows
+      limit = rows * 1;
+      const expenses = await req.user.getExpenses(req.user, { offset, limit });
+      res.status(200).json({expenses,totalCount});
+  }
+  catch (error) {
+      res.status(504).json({ message: 'Something went wrong!', error: error });
+      console.log(error);
+  }
 }
 
 
@@ -129,5 +144,6 @@ module.exports = {
     deleteexpense,
     getexpenses,
     addexpense,
-    downloadexpenses
+    downloadexpenses,
+    getexpenses
 }
