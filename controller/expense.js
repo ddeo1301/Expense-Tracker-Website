@@ -1,6 +1,34 @@
 const Expense = require('../models/expenses');
 const User = require('../models/users');
 const sequelize = require('../util/database');
+const UserServices = require('../services/userservices');
+const S3Service = require('../services/S3services');
+const DownloadedFile = require('../models/downloadFile');
+
+const downloadexpenses = async(req,res) => {
+    console.log("hi");
+    try{
+       const expenses = await UserServices.getExpenses(req);
+       console.log(expenses);
+       const stringifiedexpenses=JSON.stringify(expenses);
+    
+       const userId = req.user.id;
+  
+       const filename=`Expense${userId}/${new Date()}.txt`;
+       const fileUrl = await S3Service.uploadToS3(stringifiedexpenses,filename);
+
+       DownloadedFile.create({
+          url : fileUrl,
+          userId : req.user.id
+       })
+  
+       res.status(200).json({fileUrl, success:true})
+     } catch(err){
+      console.log(err);
+        return res.status(500).json({ fileUrl:'', success: false, error: err });
+       }  
+}
+
 
 const addexpense = async (req, res) => {
     const t = await sequelize.transaction();
@@ -26,7 +54,6 @@ const addexpense = async (req, res) => {
             totalExpenses: totalExpense
         },{
             where: {id: req.user.id},
-            //transaction: t
         },{
             transaction: t
         })
@@ -98,66 +125,9 @@ const deleteexpense = async (req, res) => {
     }
   };
   
-
-// const deleteexpense = (req, res) => {
-//     const expenseid = req.params.expenseid;
-
-//     if(expenseid == undefined || expenseid.length === 0){
-//         return res.status(400).json({success: false })
-//     }
-    
-//     Expense.destroy({where: { id: expenseid, userId: req.user.id }}).then((noofrows) => {
-//         if(noofrows === 0){
-//             return res.status(404).json({success: false, message: "Expense doesnot belongs to user"})
-//         }
-//         return res.status(200).json({ success: true, message: "Deleted Successfuly"})
-//     }).catch(err => {
-//         console.log(err);
-//         return res.status(500).json({ success: true, message: "Failed"})
-//     })
-// }
-
 module.exports = {
     deleteexpense,
     getexpenses,
-    addexpense
+    addexpense,
+    downloadexpenses
 }
-
-
-// const Expense = require('../models/expenses');
-
-// const addexpense = (req, res) => {
-//     const { expenseamount, description, category } = req.body;
-//     req.user.createExpense({ expenseamount, description, category }).then(expense => {
-//         return res.status(201).json({expense, success: true } );
-//     }).catch(err => {
-//         return res.status(403).json({success : false, error: err})
-//     })
-// }
-
-// const getexpenses = (req, res)=> {
-
-//     req.user.getExpenses().then(expenses => {
-//         return res.status(200).json({expenses, success: true})
-//     })
-//     .catch(err => {
-//         return res.status(402).json({ error: err, success: false})
-//     })
-// }
-
-// const deleteexpense = (req, res) => {
-//     const expenseid = req.params.expenseid;
-//     Expense.destroy({where: { id: expenseid }}).then(() => {
-//         return res.status(204).json({ success: true, message: "Deleted Successfuly"})
-//     }).catch(err => {
-//         console.log(err);
-//         return res.status(403).json({ success: true, message: "Failed"})
-//     })
-// }
-
-// module.exports = {
-//     deleteexpense,
-//     getexpenses,
-//     addexpense
-// }
-
