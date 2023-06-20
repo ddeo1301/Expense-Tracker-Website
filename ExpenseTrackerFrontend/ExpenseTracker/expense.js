@@ -48,10 +48,9 @@ window.addEventListener('DOMContentLoaded', async ()=> {
     
          const res = await axios.get(`http://localhost:3000/expense/getexpenses?page=${page}&pageSize=${pageSize}`, {headers: {'Authorization': token}});
     
-         if(res.data.allExpense.length>0){
-            listExpense(res.data.allExpense)
-            showPagination(res.data)
-        }
+        listExpense(res.data.allExpense)
+        showPagination(res.data)
+        
     }catch(err){
         console.log("error in express.js in windows.add in frontend", err)
     }
@@ -82,17 +81,23 @@ async function pageSize(val){
     }
 }
 
-async function listExpense(data){
-    try{
-        document.getElementById('pagination').innerHTML="";
-        for (i in data){
-            addNewExpensetoUI(data[i])
-        }
+async function listExpense(data) {
+    try {
+      const parentElement = document.getElementById('list-group');
+      //const parentElement = document.getElementById('pagination');
+      parentElement.innerHTML = ''; // Clear existing list of expenses
+      console.log(data);
+  
+      for (i in data) {
+        // console.log(i);
+        // console.log(data)
+        // console.log(data[i] )
+        addNewExpensetoUI(data[i]);
+      }
+    } catch (err) {
+      console.log("error in listExpense in frontend", err);
     }
-    catch(err){
-        console.log("error in listExpense in frontend", err)
-    }
-}
+  }
 
 async function showPagination({currentPage,hasNextPage,nextPage,hasPreviousPage,previousPage,lastPage}){
     try{
@@ -173,8 +178,7 @@ async function getProducts(page){
 }
 
 function addNewExpensetoUI(expense){
-    console.log("hello");
-    const parentElement = document.getElementById('listOfExpenses');
+    const parentElement = document.getElementById('list-group');
     const expenseElemId = `expense-${expense.id}`;
     parentElement.innerHTML += `
         <li id=${expenseElemId}>
