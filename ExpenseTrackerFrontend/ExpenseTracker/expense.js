@@ -89,9 +89,6 @@ async function listExpense(data) {
       console.log(data);
   
       for (i in data) {
-        // console.log(i);
-        // console.log(data)
-        // console.log(data[i] )
         addNewExpensetoUI(data[i]);
       }
     } catch (err) {
