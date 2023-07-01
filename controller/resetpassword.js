@@ -42,7 +42,7 @@ const forgotpassword = async (req, res, next) => {
                 subject: 'Reset Password ',
                  textContent: `Follow the link and reset the password `,
                 htmlContent: `<h1>click on the link below to reset the password</h1><br>
-                    <a href="http://localhost:3000/password/resetpassword/${id}">Reset your Password</a>`,
+                    <a href="http://18.233.6.175:3000/password/resetpassword/${id}">Reset your Password</a>`,
                     params: {
                         role: 'Frontend',
                     },
@@ -167,7 +167,7 @@ module.exports = {
 //             textContent: 'We received a request to reset the password for your account. Please follow the link below to reset your password:',
 //             htmlContent: `<p>Hello,</p>
 //             <p>We received a request to reset the password for your account. Please follow the link below to reset your password:</p>
-//             <p><a href="http://localhost:3000/password/forgotpassword/${id}">Reset Password</a></p>
+//             <p><a href="http://18.233.6.175:3000/password/forgotpassword/${id}">Reset Password</a></p>
 //             <p>If you did not request this password reset, please ignore this email and contact us immediately.</p>
 //             <p>Thank you,</p>
 //             <p>Expensify</p>`

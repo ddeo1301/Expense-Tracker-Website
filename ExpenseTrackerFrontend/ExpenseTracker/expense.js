@@ -9,7 +9,7 @@ function addNewExpense(e){
     console.log(expenseDetails);
 
     const token = localStorage.getItem('token');
-    axios.post('http://localhost:3000/expense/addexpense',expenseDetails, {headers: {"Authorization" : token}})
+    axios.post('http://18.233.6.175:3000/expense/addexpense',expenseDetails, {headers: {"Authorization" : token}})
         .then((response) => {
           addNewExpensetoUI(response.data.expense);
     }).catch(err => showError(err))
@@ -46,7 +46,7 @@ window.addEventListener('DOMContentLoaded', async ()=> {
            showLeaderboard()
         }
     
-         const res = await axios.get(`http://localhost:3000/expense/getexpenses?page=${page}&pageSize=${pageSize}`, {headers: {'Authorization': token}});
+         const res = await axios.get(`http://18.233.6.175:3000/expense/getexpenses?page=${page}&pageSize=${pageSize}`, {headers: {'Authorization': token}});
     
         listExpense(res.data.allExpense)
         showPagination(res.data)
@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded', async ()=> {
         console.log("error in express.js in windows.add in frontend", err)
     }
     
-    // axios.get('http://localhost:3000/expense/getexpenses', { headers: {"Authorization" : token} })
+    // axios.get('http://18.233.6.175:3000/expense/getexpenses', { headers: {"Authorization" : token} })
     // .then(response => {
     //         response.data.expenses.forEach(expense => {
     //             addNewExpensetoUI(expense);
@@ -71,7 +71,7 @@ async function pageSize(val){
         localStorage.setItem('pageSize',`${val}`)
         const page = 1
         //window.location.reload()
-        const res = await axios.get(`http://localhost:3000/expense/getexpenses?page=${page}&pageSize=${val}`, {headers: {'Authorization': token}});
+        const res = await axios.get(`http://18.233.6.175:3000/expense/getexpenses?page=${page}&pageSize=${val}`, {headers: {'Authorization': token}});
         console.log(res)
         listExpense(res.data.allExpense)
         showPagination(res.data)
@@ -146,7 +146,7 @@ async function showPagination({currentPage,hasNextPage,nextPage,hasPreviousPage,
 //         //     showLeaderboard();
 //         // };
 
-//         const response = await axios.get(`http://localhost:3000/expense/getexpenses?page=${currentPage}&rows=${rowsPerPage}`, { headers: {'Authorization': token}})
+//         const response = await axios.get(`http://18.233.6.175:3000/expense/getexpenses?page=${currentPage}&rows=${rowsPerPage}`, { headers: {'Authorization': token}})
 //        document.getElementById('listOfExpenses').innerHTML = "";
 //        const { expenses, totalCount } = response.data;
 //        pagination(totalCount);
@@ -167,7 +167,7 @@ async function getProducts(page){
     try{
         const token = localStorage.getItem('token')
         const pageSize = localStorage.getItem('pageSize')
-        const response = await axios.get(`http://localhost:3000/expense/getexpenses?page=${page}&pageSize=${pageSize}`,{headers: {'Authorization': token}})
+        const response = await axios.get(`http://18.233.6.175:3000/expense/getexpenses?page=${page}&pageSize=${pageSize}`,{headers: {'Authorization': token}})
         //console.log(response)
         listExpense(response.data.allExpense)
         showPagination(response.data)
@@ -192,7 +192,7 @@ function addNewExpensetoUI(expense){
 function deleteExpense(e, expenseid) {
     console.log("hi")
     const token = localStorage.getItem('token')
-    axios.delete(`http://localhost:3000/expense/deleteexpense/${expenseid}`, {headers: {"Authorization": token}})
+    axios.delete(`http://18.233.6.175:3000/expense/deleteexpense/${expenseid}`, {headers: {"Authorization": token}})
     .then((response) => {
             removeExpensefromUI(expenseid);   
     }).catch((err => {
@@ -216,7 +216,7 @@ function showLeaderboard(){
 
     inputElement.onclick = async() => {
         const token = localStorage.getItem('token')
-        const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
+        const userLeaderBoardArray = await axios.get('http://18.233.6.175:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
         console.log(userLeaderBoardArray)
 
         var leaderboardElem = document.getElementById('leaderboard')
@@ -239,7 +239,7 @@ function removeExpensefromUI(expenseid){
 async function download() {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/expense/download', { headers: { "Authorization": token } });
+      const response = await axios.get('http://18.233.6.175:3000/expense/download', { headers: { "Authorization": token } });
 
       console.log("enetr in try block")
   
@@ -263,7 +263,7 @@ async function download() {
 
 document.getElementById('rzp-button1').onclick = async function (e) {
     const token = localStorage.getItem('token')
-    const response  = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {"Authorization" : token} });
+    const response  = await axios.get('http://18.233.6.175:3000/purchase/premiummembership', { headers: {"Authorization" : token} });
     console.log(response);
 
     var options =
@@ -283,7 +283,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
 
      // This handler function will handle the success payment
      "handler": async function (response) {
-        const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
+        const res = await axios.post('http://18.233.6.175:3000/purchase/updatetransactionstatus',{
              order_id: options.order_id,
              payment_id: response.razorpay_payment_id,
          }, { headers: {"Authorization" : token} })

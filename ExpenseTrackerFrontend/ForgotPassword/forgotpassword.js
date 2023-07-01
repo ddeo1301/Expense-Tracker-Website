@@ -7,7 +7,7 @@ const forgotpassword = async (event) => {
     };
 
     console.log('user details', userDetails);
-    axios.post('http://localhost:3000/password/forgotpassword', userDetails)
+    axios.post('http://18.233.6.175:3000/password/forgotpassword', userDetails)
         .then(response => {
             console.log(response.status);
 
