@@ -29,6 +29,7 @@ app.use(cors());
 app.use(bodyParser.json({ extended: false })); ////this is for handling forms
 app.use(express.json());  //this is for handling jsons
 
+
 app.use('/user', userRoutes);
 app.use('/expense', expenseRoutes);
 app.use('/purchase', purchaseRoutes);

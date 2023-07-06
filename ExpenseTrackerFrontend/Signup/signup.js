@@ -12,7 +12,7 @@ async function signup(e){   // async keyword allows the use of await keyword ins
         }
         console.log(signupDetails);
 
-        const response = await axios.post("http://18.233.6.175:3000/user/signup", signupDetails);
+        const response = await axios.post("http:localhost:3000/user/signup", signupDetails);
         // send POST request to "ht..." endpoint with signupDetails object as the request body. await 
         // keyword is used to wait for the response to be received before proceeding
         if(response.status === 201){// indicate successful signup. window.location assumes that the user is in web environment
