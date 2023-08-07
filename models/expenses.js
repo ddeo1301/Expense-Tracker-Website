@@ -38,4 +38,4 @@ const Expense = sequelize.define('expense', {
   category: Sequelize.STRING,
 });
 
-module.exports = Expense;
+module.exports = Expense;//
