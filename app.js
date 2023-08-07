@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -8,10 +9,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 var cors = require('cors')//cross origin resource sharing. alg alg origin se jo request aa rhi use access de dena
-const sequelize = require('./util/database');//sets up the connection to DB using sequelize, an ORM for Node.js
-//object relational mapping(ORM) simplifies the interaction between object-oriented programming languages and 
-//relational databases, providing a higher level of abstraction and productivity for developers. It helps 
-//reduce the complexity of database operations, improves code maintainability, and enables database independence
+const sequelize = require('./util/database');
 
 const User = require('./models/users');
 const Expense = require('./models/expenses');// imports and associates the models with their respective
@@ -55,8 +53,7 @@ Expense.belongsTo(User);
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
-sequelize.sync()// synchronizes the database models with the database using sequelize.sync() and starts the
-// server on port 3000 using app.listen(3000).
+sequelize.sync()
     .then(() => {
         app.listen(3000);
     })
@@ -65,6 +62,43 @@ sequelize.sync()// synchronizes the database models with the database using sequ
     })
 
 
+// mongoose
+// //.connect('mongodb+srv://divyanshudeo:Divyanshu97@cluster0.c0wlb9b.mongodb.net/?retryWrites=true&w=majority')
+// .connect('mongodb+srv://divyanshudeo:Divyanshu97@expense.fstdpax.mongodb.net/?retryWrites=true&w=majority')
+// .then(result => {
+//   console.log('connected')
+//   app.listen(3000)
+// })
+// .catch(err =>{
+//   console.log(err);
+// })
+
+// mongoose.connect('mongodb+srv://divyanshudeo:Divyanshu97@cluster0.c0wlb9b.mongodb.net/?retryWrites=true&w=majority', {
+//   useNewUrlParser: "true",
+//   useUnifiedTopology: "true",
+//   serverSelectionTimeoutMS: 5000,
+// })
+// mongoose.connection.on("error", err => {
+//   console.log("err", err)
+// })
+// mongoose.connection.on("connected", (err, res) => {
+//   console.log("mongoose is connected")
+// })
+// app.listen(3000,()=>{
+//   console.log(`conected...`)
+// })
+
+// mongoose.connect("mongodb://localhost:27017/Cluster0", {
+//   useNewUrlParser: "true",
+//   useUnifiedTopology: "true"
+// })
+// mongoose.connection.on("error", err => {
+//   console.log("connection error")
+//   console.log("err", err)
+// })
+// mongoose.connection.on("connected", (err, res) => {
+//   console.log("mongoose is connected")
+// })
 
 
     

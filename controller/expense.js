@@ -9,8 +9,7 @@ const DownloadedFile = require('../models/downloadFile');
 const downloadexpenses = async (req, res) => {
   console.log("hi");
   try {
-    const expenses = await UserServices.getexpenses(req);//code is retrieving the expense and
-    // it fetch expenses by 'req' object
+    const expenses = await UserServices.getexpenses(req);//code is retrieving the expense and it fetch expenses by 'req' object
     console.log(expenses);
     const stringifiedexpenses = JSON.stringify(expenses);//JSON string representation of 'expense' object
 
